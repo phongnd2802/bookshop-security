@@ -25,15 +25,8 @@
           </ul>
         </aside>
         <aside class="col-lg-5">
-          <h6 class="pb-2">Đăng ký nhận tin</h6>
-          <form action="#">
-            <div class="input-group w-100">
-              <input type="text" class="form-control" placeholder="Email của bạn ...">
-              <button class="btn btn-primary" type="button">
-                Đăng ký
-              </button>
-            </div>
-          </form>
+
+
         </aside>
       </div> <!-- row.// -->
     </div> <!-- container.// -->

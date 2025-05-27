@@ -1,5 +1,6 @@
 package com.bookshopweb.servlet.client;
 
+
 import com.bookshopweb.beans.Category;
 import com.bookshopweb.beans.Product;
 import com.bookshopweb.service.CategoryService;
@@ -11,9 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @WebServlet(name = "HomeServlet", value = "")
 public class HomeServlet extends HttpServlet {
@@ -22,6 +25,13 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String csrfToken = (String) session.getAttribute("csrf_token");
+        if (csrfToken == null) {
+            csrfToken = UUID.randomUUID().toString();
+            session.setAttribute("csrf_token", csrfToken);
+        }
+        request.setAttribute("csrf_token", csrfToken);
         List<Category> categories = Protector.of(() -> categoryService.getPart(12, 0))
                 .get(ArrayList::new);
         List<Product> products = Protector.of(() -> productService.getOrderedPart(12, 0, "createdAt", "DESC"))

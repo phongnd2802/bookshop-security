@@ -16,10 +16,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @WebServlet(name = "ProductServlet", value = "/product")
 public class ProductServlet extends HttpServlet {
@@ -32,6 +34,7 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         // Lấy id của product và đối tượng product từ database theo id này
         long id = Protector.of(() -> Long.parseLong(request.getParameter("id"))).get(0L);
         Optional<Product> productFromServer = Protector.of(() -> productService.getById(id)).get(Optional::empty);
@@ -91,6 +94,14 @@ public class ProductServlet extends HttpServlet {
                             .countByUserIdAndProductId(userId, product.getId())).get(0))
                     .orElse(0);
 
+
+            HttpSession session = request.getSession();
+            String csrfToken = (String) session.getAttribute("csrf_token");
+            if (csrfToken == null) {
+                csrfToken = UUID.randomUUID().toString();
+                session.setAttribute("csrf_token", csrfToken);
+            }
+            request.setAttribute("csrf_token", csrfToken);
             request.setAttribute("category", category);
             request.setAttribute("product", product);
             request.setAttribute("totalProductReviews", totalProductReviews);

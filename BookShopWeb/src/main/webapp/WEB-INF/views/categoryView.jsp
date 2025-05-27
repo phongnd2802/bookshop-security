@@ -13,6 +13,9 @@
 <body>
 <jsp:include page="_header.jsp"/>
 
+
+
+
 <section class="section-pagetop bg-light">
   <div class="container">
     <h2 class="title-page">${requestScope.category.name}</h2>
@@ -32,113 +35,115 @@
     <div class="row">
       <aside class="col-md-4 col-lg-3 mb-md-0 mb-3">
         <div class="card">
-          <form action="${pageContext.request.contextPath}/category" method="get">
-            <article class="filter-group">
-              <header class="card-header my-1">
-                <a data-bs-toggle="collapse" href="#collapse_1" aria-expanded="true"
-                   aria-controls="collapse_1">
-                  <i class="float-end bi bi-chevron-down"></i>
-                  <h6 class="title fw-bold">Nhà xuất bản</h6>
-                </a>
-              </header>
-              <div class="filter-content collapse show" id="collapse_1">
-                <div class="card-body pt-0">
-                  <input type="hidden" name="id" value="${requestScope.category.id}">
-                  <c:choose>
-                    <c:when test="${not empty requestScope.publishers}">
-                      <c:forEach var="publisher" items="${requestScope.publishers}" varStatus="status">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="${publisher}"
-                                 id="checkbox_publisher_${status.index}" name="checkedPublishers"
-                            ${requestScope.checkedPublishers.contains(publisher) ? 'checked' : ''}>
-                          <label class="form-check-label" for="checkbox_publisher_${status.index}">
-                              ${publisher}
-                          </label>
-                        </div>
-                      </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                      Không có
-                    </c:otherwise>
-                  </c:choose>
-                </div> <!-- card-body.// -->
-              </div>
-            </article>
-            <article class="filter-group">
-              <header class="card-header my-1">
-                <a data-bs-toggle="collapse" href="#collapse_2" aria-expanded="true"
-                   aria-controls="collapse_2">
-                  <i class="float-end bi bi-chevron-down"></i>
-                  <h6 class="title fw-bold">Giá bán</h6>
-                </a>
-              </header>
-              <div class="filter-content collapse show" id="collapse_2">
-                <div class="card-body pt-0">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="0-50000"
-                           id="checkbox_price_1" name="priceRanges"
-                    ${requestScope.priceRanges.contains('0-50000') ? 'checked' : ''}>
-                    <label class="form-check-label" for="checkbox_price_1">
-                      Dưới 50.000₫
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="50000-200000"
-                           id="checkbox_price_2" name="priceRanges"
-                    ${requestScope.priceRanges.contains('50000-200000') ? 'checked' : ''}>
-                    <label class="form-check-label" for="checkbox_price_2">
-                      Từ 50.000₫ đến 200.000₫
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="200000-infinity"
-                           id="checkbox_price_3" name="priceRanges"
-                    ${requestScope.priceRanges.contains('200000-infinity') ? 'checked' : ''}>
-                    <label class="form-check-label" for="checkbox_price_3">
-                      Trên 200.000₫
-                    </label>
-                  </div>
-                </div> <!-- card-body.// -->
-              </div>
-            </article>
-            <article class="filter-group">
-              <header class="card-header my-1">
-                <a data-bs-toggle="collapse" href="#collapse_3" aria-expanded="true"
-                   aria-controls="collapse_3">
-                  <i class="float-end bi bi-chevron-down"></i>
-                  <h6 class="title fw-bold">Sắp xếp theo</h6>
-                </a>
-              </header>
-              <div class="filter-content collapse show" id="collapse_3">
-                <div class="card-body pt-0">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" value="totalBuy-DESC" name="order"
-                           id="radio_order_1" ${requestScope.order == 'totalBuy-DESC' ? 'checked' : ''}>
-                    <label class="form-check-label" for="radio_order_1">
-                      Bán chạy nhất
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" value="createdAt-DESC" name="order"
-                           id="radio_order_2" ${requestScope.order == 'createdAt-DESC' ? 'checked' : ''}>
-                    <label class="form-check-label" for="radio_order_2">
-                      Mới nhất
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" value="price-ASC" name="order"
-                           id="radio_order_3" ${requestScope.order == 'price-ASC' ? 'checked' : ''}>
-                    <label class="form-check-label" for="radio_order_3">
-                      Giá thấp nhất
-                    </label>
-                  </div>
-                </div> <!-- card-body.// -->
-              </div>
-            </article>
-            <article class="card-body">
-              <button type="submit" class="btn btn-primary w-100">Lọc</button>
-            </article>
-          </form>
+<%--          <form action="${pageContext.request.contextPath}/category" method="get">--%>
+<%--            <input type="hidden" name="csrf_token" value="${csrf_token}">--%>
+
+<%--            <article class="filter-group">--%>
+<%--              <header class="card-header my-1">--%>
+<%--                <a data-bs-toggle="collapse" href="#collapse_1" aria-expanded="true"--%>
+<%--                   aria-controls="collapse_1">--%>
+<%--                  <i class="float-end bi bi-chevron-down"></i>--%>
+<%--                  <h6 class="title fw-bold">Nhà xuất bản</h6>--%>
+<%--                </a>--%>
+<%--              </header>--%>
+<%--              <div class="filter-content collapse show" id="collapse_1">--%>
+<%--                <div class="card-body pt-0">--%>
+<%--                  <input type="hidden" name="id" value="${requestScope.category.id}">--%>
+<%--                  <c:choose>--%>
+<%--                    <c:when test="${not empty requestScope.publishers}">--%>
+<%--                      <c:forEach var="publisher" items="${requestScope.publishers}" varStatus="status">--%>
+<%--                        <div class="form-check">--%>
+<%--                          <input class="form-check-input" type="checkbox" value="${publisher}"--%>
+<%--                                 id="checkbox_publisher_${status.index}" name="checkedPublishers"--%>
+<%--                            ${requestScope.checkedPublishers.contains(publisher) ? 'checked' : ''}>--%>
+<%--                          <label class="form-check-label" for="checkbox_publisher_${status.index}">--%>
+<%--                              ${publisher}--%>
+<%--                          </label>--%>
+<%--                        </div>--%>
+<%--                      </c:forEach>--%>
+<%--                    </c:when>--%>
+<%--                    <c:otherwise>--%>
+<%--                      Không có--%>
+<%--                    </c:otherwise>--%>
+<%--                  </c:choose>--%>
+<%--                </div> <!-- card-body.// -->--%>
+<%--              </div>--%>
+<%--            </article>--%>
+<%--            <article class="filter-group">--%>
+<%--              <header class="card-header my-1">--%>
+<%--                <a data-bs-toggle="collapse" href="#collapse_2" aria-expanded="true"--%>
+<%--                   aria-controls="collapse_2">--%>
+<%--                  <i class="float-end bi bi-chevron-down"></i>--%>
+<%--                  <h6 class="title fw-bold">Giá bán</h6>--%>
+<%--                </a>--%>
+<%--              </header>--%>
+<%--              <div class="filter-content collapse show" id="collapse_2">--%>
+<%--                <div class="card-body pt-0">--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="checkbox" value="0-50000"--%>
+<%--                           id="checkbox_price_1" name="priceRanges"--%>
+<%--                    ${requestScope.priceRanges.contains('0-50000') ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="checkbox_price_1">--%>
+<%--                      Dưới 50.000₫--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="checkbox" value="50000-200000"--%>
+<%--                           id="checkbox_price_2" name="priceRanges"--%>
+<%--                    ${requestScope.priceRanges.contains('50000-200000') ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="checkbox_price_2">--%>
+<%--                      Từ 50.000₫ đến 200.000₫--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="checkbox" value="200000-infinity"--%>
+<%--                           id="checkbox_price_3" name="priceRanges"--%>
+<%--                    ${requestScope.priceRanges.contains('200000-infinity') ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="checkbox_price_3">--%>
+<%--                      Trên 200.000₫--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                </div> <!-- card-body.// -->--%>
+<%--              </div>--%>
+<%--            </article>--%>
+<%--            <article class="filter-group">--%>
+<%--              <header class="card-header my-1">--%>
+<%--                <a data-bs-toggle="collapse" href="#collapse_3" aria-expanded="true"--%>
+<%--                   aria-controls="collapse_3">--%>
+<%--                  <i class="float-end bi bi-chevron-down"></i>--%>
+<%--                  <h6 class="title fw-bold">Sắp xếp theo</h6>--%>
+<%--                </a>--%>
+<%--              </header>--%>
+<%--              <div class="filter-content collapse show" id="collapse_3">--%>
+<%--                <div class="card-body pt-0">--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="radio" value="totalBuy-DESC" name="order"--%>
+<%--                           id="radio_order_1" ${requestScope.order == 'totalBuy-DESC' ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="radio_order_1">--%>
+<%--                      Bán chạy nhất--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="radio" value="createdAt-DESC" name="order"--%>
+<%--                           id="radio_order_2" ${requestScope.order == 'createdAt-DESC' ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="radio_order_2">--%>
+<%--                      Mới nhất--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                  <div class="form-check">--%>
+<%--                    <input class="form-check-input" type="radio" value="price-ASC" name="order"--%>
+<%--                           id="radio_order_3" ${requestScope.order == 'price-ASC' ? 'checked' : ''}>--%>
+<%--                    <label class="form-check-label" for="radio_order_3">--%>
+<%--                      Giá thấp nhất--%>
+<%--                    </label>--%>
+<%--                  </div>--%>
+<%--                </div> <!-- card-body.// -->--%>
+<%--              </div>--%>
+<%--            </article>--%>
+<%--            <article class="card-body">--%>
+<%--              <button type="submit" class="btn btn-primary w-100">Lọc</button>--%>
+<%--            </article>--%>
+<%--          </form>--%>
         </div> <!-- card.// -->
       </aside> <!-- col.// -->
 

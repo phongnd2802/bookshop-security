@@ -17,11 +17,14 @@
                      placeholder="Nhập từ khóa cần tìm ..."
                      name="q"
                      value="${requestScope.query}">
+              <input type="hidden" name="csrf_token" value="${csrf_token}">
               <button class="btn btn-primary" type="submit">
                 <i class="bi bi-search"></i>
               </button>
             </div>
           </form>
+
+
         </div> <!-- col.// -->
         <div class="col-lg-5 col-xl-4">
           <c:if test="${not empty sessionScope.currentUser}">

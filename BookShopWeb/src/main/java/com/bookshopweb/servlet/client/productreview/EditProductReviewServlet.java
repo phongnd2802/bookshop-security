@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,14 @@ public class EditProductReviewServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String sessionToken = (String) session.getAttribute("csrf_token");
+        String formToken = request.getParameter("csrf_token");
+
+        if (sessionToken == null || formToken == null || !sessionToken.equals(formToken)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token mismatch");
+            return;
+        }
         long id = Protector.of(() -> Long.parseLong(request.getParameter("id"))).get(0L);
         Optional<ProductReview> productReviewFromServer = Protector.of(() -> productReviewService.getById(id))
                 .get(Optional::empty);

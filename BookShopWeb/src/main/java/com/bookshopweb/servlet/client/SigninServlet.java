@@ -10,11 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @WebServlet(name = "SigninServlet", value = "/signin")
 public class SigninServlet extends HttpServlet {
@@ -22,11 +20,27 @@ public class SigninServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String csrfToken = (String) session.getAttribute("csrf_token");
+        if (csrfToken == null) {
+            csrfToken = UUID.randomUUID().toString();
+            session.setAttribute("csrf_token", csrfToken);
+        }
+        request.setAttribute("csrf_token", csrfToken);
         request.getRequestDispatcher("/WEB-INF/views/signinView.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String sessionToken = (String) session.getAttribute("csrf_token");
+        String formToken = request.getParameter("csrf_token");
+
+        if (sessionToken == null || formToken == null || !sessionToken.equals(formToken)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token mismatch");
+            return;
+        }
+
         Map<String, String> values = new HashMap<>();
         values.put("username", request.getParameter("username"));
         values.put("password", request.getParameter("password"));
@@ -51,7 +65,7 @@ public class SigninServlet extends HttpServlet {
         int sumOfViolations = violations.values().stream().mapToInt(List::size).sum();
 
         if (sumOfViolations == 0 && userFromServer.isPresent()) {
-                request.getSession().setAttribute("currentUser", userFromServer.get());
+            request.getSession().setAttribute("currentUser", userFromServer.get());
             response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.setAttribute("values", values);

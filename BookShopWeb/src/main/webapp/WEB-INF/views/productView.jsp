@@ -192,6 +192,7 @@
                 <c:if test="${productReview.userId == sessionScope.currentUser.id}">
                   <form action="${pageContext.request.contextPath}/deleteProductReview"
                         method="post">
+                    <input type="hidden" name="csrf_token" value="${csrf_token}">
                     <input type="hidden" name="productReviewId" value="${productReview.id}">
                     <input type="hidden" name="productId" value="${requestScope.product.id}">
                     <div class="btn-group" role="group">
@@ -258,6 +259,8 @@
             <div class="ratting-form-wrapper">
               <div class="ratting-form">
                 <form action="${pageContext.request.contextPath}/addProductReview" method="post">
+                  <input type="hidden" name="csrf_token" value="${csrf_token}">
+
                   <div class="row">
                     <div class="col-md-3 mb-3">
                       <select class="form-select ${not empty sessionScope.violations.ratingScoreViolations

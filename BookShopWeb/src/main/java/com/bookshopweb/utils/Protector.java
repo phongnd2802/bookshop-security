@@ -20,6 +20,16 @@ public class Protector<R> {
         }
         return p;
     }
+    public static String escapeHtml(String input) {
+        if (input == null) return null;
+        String temp = input
+                .replace("&", "")
+                .replace("<", "")
+                .replace(">", "")
+                .replace("'", "");
+        System.out.println("temp: " + temp);
+        return temp;
+    }
 
     // Nhận vào hàm không trả về giá trị: update(t), delete(t)
     public static Protector<Boolean> of(Runnable f) {
